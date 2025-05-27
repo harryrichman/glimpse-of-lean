@@ -97,7 +97,7 @@ displayed after each `by` after the `calc` line.
 
 example (a b c d : ℝ) (h : c = b*a - d) (h' : d = a*b) : c = 0 := by
   calc
-    c = b*a - d   := by congr
+    c = b*a - d   := by exact h
     _ = b*a - a*b := by congr
     _ = 0         := by ring
 
@@ -184,7 +184,12 @@ The `apply` tactic can be used to specialize universally quantified statements.
 -/
 
 example (f : ℝ → ℝ) (hf : even_fun f) : f (-3) = f 3 := by
-  apply hf 3
+  unfold even_fun at hf
+  have h3 : _ := hf 3
+  exact h3
+  -- apply h3 -- hf 3
+
+#help tactic apply
 
 /-
 Fortunately, Lean is willing to work for us, so we can leave out the `3` and
@@ -483,6 +488,7 @@ we’ve seen above: if `u` is constant with value `l` then `u` tends to `l`.
 Remember `apply?` can find lemmas whose name you don’t want to remember, such as
 the lemma saying that positive implies non-negative. -/
 example (h : ∀ n, u n = l) : seq_limit u l := by
+  unfold seq_limit
   intro ε ε_pos
   use 0
   intro n hn
@@ -510,7 +516,12 @@ below, we use it to prove `ε/2 > 0` from our assumption `ε > 0`.
 example (hu : seq_limit u l) (hv : seq_limit v l') :
     seq_limit (u + v) (l + l') := by
   intro ε ε_pos
-  rcases hu (ε/2) (by apply?) with ⟨N₁, hN₁⟩
+  unfold seq_limit at hu
+  specialize hu (ε/2) (?_) --- proof that ε/2 > 0)
+  · --first goal: ε/2 > 0
+    linarith
+  rcases hu with ⟨N₁, hN₁⟩
+  -- rcases hu (ε/2) (by apply?) with ⟨N₁, hN₁⟩
   rcases hv (ε/2) (by apply?) with ⟨N₂, hN₂⟩
   use max N₁ N₂
   intro n hn
@@ -614,5 +625,3 @@ def CauchySequence (u : ℕ → ℝ) :=
 
 example : (∃ l, seq_limit u l) → CauchySequence u := by
   sorry
-
-
