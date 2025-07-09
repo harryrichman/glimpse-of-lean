@@ -15,20 +15,13 @@ def add_2_plus_2 := 2 + 2 = 4
 example : add_2_plus_2 := by
   unfold add_2_plus_2
   norm_num
+
 /- Excercises: formalize the following statements in Lean -/
 
 
 /- Every natural number n is the sum of four squares -/
 
 theorem legendre : True := by sorry
-
-theorem legendre_sum_of_four_squares (n : ℕ) : ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2 := by
-  sorry
-
-theorem legendre_sum_of_four_squares' : ∀ n : ℕ,  ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2 := by
-  intro n₀
-  sorry
-
 
 /- Bertrand's postulate: For every natural number n > 1, there is a prime number p between n and 2n -/
 
@@ -38,23 +31,15 @@ theorem bertrand : True := by sorry
 #eval Nat.Prime 11
 -- 10 : Nat, so 10.Prime is abbrev for Nat.Prime 10
 
-theorem bertrand_prime (n : ℕ) (h : n > 1) : ∃ p, p.Prime ∧ (n < p) ∧ (p < 2*n) := by
-  sorry
-
-theorem bertrand_prime' : ∀ n > 1, ∃ p, p.Prime ∧ (n < p) ∧ (p < 2*n) := by
-  intro n h_ge_1
-  sorry
-
-
 /- Goldbach's conjecture: every even natural number greater than 2 is the sum of two primes. -/
 
 theorem goldbach : True := by sorry
 
-theorem goldbach_sum : ∀ n > 2, (n % 2 = 0) → ∃ p q : ℕ, p.Prime ∧ q.Prime ∧ (p + q = n) := by
-  sorry
 
-#check 10.IsEven
+/- Chebyshev's theorem: the number of primes <= x is bounded above and below
+   by constant multiples of x / log(x) -/
 
+theorem chebyshev : True := by sorry
 
 /- (challenge) The prime number theorem -/
 
@@ -67,10 +52,48 @@ noncomputable def prime_counting_function (x : ℝ) : ℝ :=
 def prime_counting_function' (x : ℕ) : ℕ :=
   (Finset.filter Nat.Prime (Finset.range (x + 1))).card
 
-#eval prime_counting_function' 11
+#eval prime_counting_function' 100
 
 -- Notation for the prime counting function
 notation "π" => prime_counting_function
+
+
+/- If p(x) is a polynomial with real coefficients, whose coefficients are all positive, and `a` is a
+positive real number, then p(a) is nonzero. -/
+
+example : True := by sorry
+
+/- If p(x) is a real-coeff. polynomial with degree d, then p(x) has at most d real roots. -/
+
+example : True := by sorry
+
+/- If M is a real symmetric matrix, then the eigenvalues of M are real. -/
+
+example {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) : True := by
+  sorry
+
+
+/- Exercise solutions -/
+
+theorem legendre_sum_of_four_squares (n : ℕ) : ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2 := by
+  sorry
+
+theorem legendre_sum_of_four_squares' : ∀ n : ℕ,  ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2 := by
+  intro n₀
+  sorry
+
+
+theorem bertrand_prime (n : ℕ) (h : n > 1) : ∃ p, p.Prime ∧ (n < p) ∧ (p < 2*n) := by
+  sorry
+
+theorem bertrand_prime' : ∀ n > 1, ∃ p, p.Prime ∧ (n < p) ∧ (p < 2*n) := by
+  intro n h_ge_1
+  sorry
+
+
+theorem goldbach_sum : ∀ n > 2, (n % 2 = 0) → ∃ p q : ℕ, p.Prime ∧ q.Prime ∧ (p + q = n) := by
+  sorry
+
 
 theorem chebyshev_bounds : ∃ C₁ C₂ : NNReal, ∀ x, x / Real.log x < C₁ * π x ∧ π x < C₂ * x / Real.log x := by
   sorry
@@ -81,21 +104,8 @@ theorem prime_number_theorem_classical :
     π =ᶠ[Filter.atTop] fun x => x / Real.log x := by
   sorry
 
--- More explicit formulation: lim_{x→∞} π(x) / (x / log x) = 1
-theorem prime_number_theorem_limit :
-    Filter.Tendsto (fun x => (π x : ℝ) / (x / Real.log x)) Filter.atTop (𝓝 1) := by
-  sorry
 
 
-/- If p(x) is a polynomial with real coefficients, whose coefficients are all positive, and `a` is a
-positive real number, then p(a) is nonzero. -/
-
-/- If p(x) is a real-coeff. polynomial with degree d, then p(x) has at most d real roots. -/
-
-/- If M is a real symmetric matrix, then the eigenvalues of M are real. -/
-
-example {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) : True := by
-  sorry
 
 
 
