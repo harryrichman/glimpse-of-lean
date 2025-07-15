@@ -6,16 +6,17 @@ def topMinor {n : ℕ} (A : Matrix (Fin (n+1)) (Fin (n+1)) ℝ) : Matrix (Fin n)
 
 #eval topMinor !![5, 4; 3, 2]
 
-theorem minorOfHermitianHermitian {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) :
-  (hA : A.IsHermitian) → (hMinor : (topMinor A).IsHermitian) := by
+theorem minorOfHermitianHermitian {n : ℕ} (A : Matrix (Fin (n+1)) (Fin (n+1)) ℝ) :
+  (A.IsHermitian) → ((topMinor A).IsHermitian) := by
   sorry
 
 
 -- Cauchy's Interlacing Theorem: If A is a real, symmetric nxn matrix, then the eigenvalues of any
 -- (n-1)x(n-1) minor interlace the eigenvalues of A
 
-theorem cauchy {n : ℕ} : ∀ A : Matrix (Fin n) (Fin n) ℝ,
-  (hA : A.IsHermitian) → ∀ i : Fin n, hA.eigenvalues i ≤ hAminor.eigenvalues i := by
+theorem cauchy {n : ℕ} : ∀ A : Matrix (Fin (n+1)) (Fin (n+1)) ℝ,
+  (hA : A.IsHermitian) → ∀ i : Fin n, hA.eigenvalues i ≤ (minorOfHermitianHermitian A hA).eigenvalues i
+  ∧ (minorOfHermitianHermitian A hA).eigenvalues i ≤ hA.eigenvalues (i+1) := by
   sorry
 
 
