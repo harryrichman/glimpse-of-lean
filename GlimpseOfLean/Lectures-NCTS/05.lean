@@ -128,6 +128,8 @@ decreasing_by
   simp only [List.mem_range] at hx2
   apply hx2
 
+-- if list `l` is produced from a filtering condition, `attach` allows the elements of `l` to
+-- "remember" that they passed the filter condition
 #check List.attach
 
 #check List.filter (fun d => isDiv d 100 ∧ d > 0) (List.range 100)
